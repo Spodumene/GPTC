@@ -2,16 +2,14 @@ package mod.gptc.item;
 
 import java.util.Optional;
 
-import mod.gptc.entity.GemBase;
 import mod.gptc.entity.GemEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
@@ -32,18 +30,16 @@ public class ItemGemstone extends Item {
         if(!context.getWorld().isClient && stack.hasNbt() && stack.getNbt().contains("bepis")) {
             ServerWorld serverWorld = (ServerWorld) context.getWorld();
             BlockPos pos = context.getBlockPos().offset(context.getSide());
-            ServerPlayerEntity player = (ServerPlayerEntity) context.getPlayer();
+            PlayerEntity player = (PlayerEntity) context.getPlayer();
             NbtCompound entityTag = context.getStack().getSubNbt("bepis");
             Optional<Entity> entity = this.type.getEntityFromNbt(entityTag, serverWorld);
             if(entity.isPresent()) {
-                LivingEntity entity2 = (LivingEntity) entity.get();
+                GemEntity entity2 = (GemEntity) entity.get();
                 entity2.setHealth(entity2.getMaxHealth());
-                entity2.updatePositionAndAngles(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, player.getYaw(), player.getPitch());
-                if (entity2 instanceof GemBase) {
-                	if (((GemBase) entity2).getOwnerId() == player.getUuid()) {
-                		((GemBase) entity2).setOwnerId(player.getUuid());
-                	}
+                if (entity2.getOwned() == true && entity2.getOwnerId() == player.getUuid()) {
+                	entity2.setOwnerId(player.getUuid());
                 }
+                entity2.updatePositionAndAngles(pos.getX() + 0.5F, pos.getY() + 1F, pos.getZ() + 0.5F, player.getYaw(), player.getPitch());
                 serverWorld.spawnEntity(entity2);
             }
             context.getPlayer().getStackInHand(context.getHand());

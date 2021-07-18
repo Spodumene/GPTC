@@ -2,7 +2,7 @@ package mod.gptc.entity.gem;
 
 import java.util.ArrayList;
 
-import mod.gptc.entity.GemBase;
+import mod.gptc.entity.GemEntity;
 import mod.gptc.entity.util.GemCuts;
 import mod.gptc.entity.util.GemPlacements;
 import mod.gptc.init.ModItems;
@@ -12,7 +12,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.world.World;
 
-public class GemRuby extends GemBase {
+public class GemRuby extends GemEntity {
 	private static final int SKIN_COLOR_BEGIN = 0xE0316F;
 	private static final int SKIN_COLOR_MID = 0xE52C5C;
 	private static final int SKIN_COLOR_END = 0xED294C;

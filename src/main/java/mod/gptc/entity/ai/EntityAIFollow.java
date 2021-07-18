@@ -6,14 +6,14 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import java.util.List;
 
-import mod.gptc.entity.GemBase;
+import mod.gptc.entity.GemEntity;
 
 public class EntityAIFollow extends Goal {
-    public GemBase follower;
+    public GemEntity follower;
     public LivingEntity owner;
     public double speed;
 
-    public EntityAIFollow(GemBase entityIn, double speedIn) {
+    public EntityAIFollow(GemEntity entityIn, double speedIn) {
         this.follower = entityIn;
         this.speed = speedIn;
     }
