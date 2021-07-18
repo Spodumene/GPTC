@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "gptc:items/spinel_gem_7"
+  }
+}
