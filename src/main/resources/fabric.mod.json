@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "gptc",
+  "version": "${version}",
+
+  "name": "GPTC",
+  "description": "A new Steven Universe inspired mod that allows players to create an empire.",
+  "authors": [
+    "GoneWithTheWind#9699"
+  ],
+
+  "license": "CC0-1.0",
+  "icon": "assets/gptc/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "mod.gptc.GPTC"
+    ],
+    "client": [
+      "mod.gptc.proxy.ClientProxy"
+    ]
+  },
+
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.17.x",
+    "java": ">=16"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
