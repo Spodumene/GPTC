@@ -2,7 +2,10 @@
 
 ## Features
 * Gems - Tameable gems that shall do your bidding based on their powers.
-    * Ruby - A pyrokinetic soldier, capable of many fire-based abilities.
+    * Ruby - A pyrokinetic soldier, capable of many fire-based abilities. WARNING: Not finished!
+         * Ability 1: Fireballs
+         * Ability 2: Exploding when health is low and enemies are present
+         * Ability 3: Lighting enemies on fire
 * Gemstones - Items that summon their respective gems. 
 
 ## Plans
