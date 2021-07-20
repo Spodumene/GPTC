@@ -3,6 +3,9 @@ package mod.gptc.init;
 import mod.gptc.GPTC;
 import mod.gptc.item.ItemGemstone;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -181,6 +184,8 @@ public class ModItems {
     public static final ItemGemstone YELLOW_DIAMOND_GEM = new ItemGemstone(new FabricItemSettings().group(GPTC.GEMSTONES).maxCount(1).fireproof(), "yellow_diamond_gem", ModEntities.RUBY);
     public static final ItemGemstone BLUE_DIAMOND_GEM = new ItemGemstone(new FabricItemSettings().group(GPTC.GEMSTONES).maxCount(1).fireproof(), "blue_diamond_gem", ModEntities.RUBY);
     public static final ItemGemstone PINK_DIAMOND_GEM = new ItemGemstone(new FabricItemSettings().group(GPTC.GEMSTONES).maxCount(1).fireproof(), "pink_diamond_gem", ModEntities.RUBY);
+    
+    public static final Item RUBY_SPAWN_EGG = new SpawnEggItem(ModEntities.RUBY, 0xE52C5C, 0x3B0015, new Item.Settings().group(ItemGroup.MISC));
     /****************************************
      *****The above items are gemstones.***** 
      ****************************************/ 
@@ -352,5 +357,7 @@ public class ModItems {
     	Registry.register(Registry.ITEM, new Identifier("gptc", "yellow_diamond_gem"), YELLOW_DIAMOND_GEM);
     	Registry.register(Registry.ITEM, new Identifier("gptc", "blue_diamond_gem"), BLUE_DIAMOND_GEM);
     	Registry.register(Registry.ITEM, new Identifier("gptc", "pink_diamond_gem"), PINK_DIAMOND_GEM);
+    	
+    	Registry.register(Registry.ITEM, new Identifier("gptc", "ruby_spawn_egg"), RUBY_SPAWN_EGG);
     }
 }

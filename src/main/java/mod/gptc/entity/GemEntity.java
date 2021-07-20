@@ -171,7 +171,7 @@ public class GemEntity extends PathAwareEntity {
 					}
 				} else {
 					if (this.getOwned() == true) {
-						if (this.getOwnerId() == player.getUuid() && player.getActiveItem().isEmpty()) {
+						if (this.getOwnerId().equals(player.getUuid()) && player.getActiveItem().isEmpty()) {
 							this.cycleMovementAI(player);
 						} else {
 							player.sendMessage(new LiteralText("This gem isn't yours"), false);
@@ -182,7 +182,7 @@ public class GemEntity extends PathAwareEntity {
 			} else if (player.getMainHandStack().getItem() instanceof DyeItem) {
 				DyeItem dye = (DyeItem) player.getMainHandStack().getItem();
 				if (this.getOwned() == true) {
-					if (this.getOwnerId() == player.getUuid()) {
+					if (this.getOwnerId().equals(player.getUuid())) {
 						if (player.isSneaking()) {
 							this.setInsigniaColor(dye.getColor().getId());	
 						}
@@ -192,7 +192,7 @@ public class GemEntity extends PathAwareEntity {
 				}
 			}  else if (player.getMainHandStack().getItem() instanceof SwordItem) {
 				if (this.getOwned() == true) {
-					if (this.getOwnerId() == player.getUuid()) {
+					if (this.getOwnerId().equals(player.getUuid())) {
 						this.setHealth(1);
 						player.sendMessage(new LiteralText("This gem is ready for poofing"), false);
 					} else {

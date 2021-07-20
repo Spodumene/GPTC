@@ -36,7 +36,7 @@ public class ItemGemstone extends Item {
             if(entity.isPresent()) {
                 GemEntity entity2 = (GemEntity) entity.get();
                 entity2.setHealth(entity2.getMaxHealth());
-                if (entity2.getOwned() == true && entity2.getOwnerId() == player.getUuid()) {
+                if (entity2.getOwned() == true && entity2.getOwnerId().equals(player.getUuid())) {
                 	entity2.setOwnerId(player.getUuid());
                 }
                 entity2.updatePositionAndAngles(pos.getX() + 0.5F, pos.getY() + 1F, pos.getZ() + 0.5F, player.getYaw(), player.getPitch());
