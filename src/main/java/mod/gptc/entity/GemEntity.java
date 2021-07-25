@@ -18,6 +18,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.RangedAttackMob;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.ai.goal.LookAtEntityGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
@@ -40,7 +41,7 @@ import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 
-public class GemEntity extends PathAwareEntity {
+public abstract class GemEntity extends PathAwareEntity implements RangedAttackMob {
 	public static final TrackedData<Optional<UUID>> GEM_UUID = DataTracker.<Optional<UUID>>registerData(GemEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
 	public static final TrackedData<Optional<UUID>> OWNER_UUID = DataTracker.<Optional<UUID>>registerData(GemEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
 	public static final TrackedData<Boolean> OWNED = DataTracker.<Boolean>registerData(GemEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -89,16 +90,11 @@ public class GemEntity extends PathAwareEntity {
 	}
 	
 	protected void initGoals() {
-        this.goalSelector.add(5, new SwimGoal(this));
-        this.goalSelector.add(7, new LookAtEntityGoal(this, PlayerEntity.class, 4.0F));
-        this.goalSelector.add(8, new LookAroundGoal(this));
-        this.goalSelector.add(7, new EntityAIWander(this, 1.0D));
-		this.goalSelector.add(7, new EntityAIFollow(this, 1.0D));
-        this.initCustomGoals();
-	}
-	
-	protected void initCustomGoals() {
-		
+        this.goalSelector.add(7, new SwimGoal(this));
+        this.goalSelector.add(6, new LookAtEntityGoal(this, PlayerEntity.class, 4.0F));
+        this.goalSelector.add(5, new LookAroundGoal(this));
+        this.goalSelector.add(4, new EntityAIWander(this, 1.0D));
+		this.goalSelector.add(3, new EntityAIFollow(this, 1.0D));
 	}
 	
 	public void writeCustomDataToNbt(NbtCompound nbt) {
@@ -145,7 +141,7 @@ public class GemEntity extends PathAwareEntity {
     	this.setSkinColor(this.generateSkinColor());
     	this.setHairColor(this.generateHairColor());
     	this.setGemColor(this.generateGemColor());
-    	this.setUniformColor(this.getHairColor());
+    	this.setUniformColor(this.getSkinColor());
     	this.setInsigniaColor(this.getInsigniaColor());
     	this.setHealth(this.getMaxHealth());
     	if (!this.isGemPlacementDefined() || !this.isGemCutDefined() || !this.isCorrectCutPlacement()) {
@@ -193,8 +189,8 @@ public class GemEntity extends PathAwareEntity {
 			}  else if (player.getMainHandStack().getItem() instanceof SwordItem) {
 				if (this.getOwned() == true) {
 					if (this.getOwnerId().equals(player.getUuid())) {
-						this.setHealth(1);
-						player.sendMessage(new LiteralText("This gem is ready for poofing"), false);
+						this.onDeath(DamageSource.CACTUS);
+						this.setHealth(0);
 					} else {
 						player.sendMessage(new LiteralText("This gem isn't yours"), false);
 					}
@@ -206,15 +202,24 @@ public class GemEntity extends PathAwareEntity {
 	
 	@Override
 	public boolean damage(DamageSource source, float amount) {
-		if (source.isFromFalling() || source.isFallingBlock() || source.isFire()) {
+		if (this.isInvulnerableTo(source)) {
 			return false;
 		}
 		return super.damage(source, amount);
 	}
+	
+    @Override
+    public boolean isInvulnerableTo(DamageSource damageSource) {
+        if (damageSource == DamageSource.DROWN || damageSource == DamageSource.FALL || damageSource == DamageSource.FLY_INTO_WALL || damageSource == DamageSource.FREEZE || damageSource == DamageSource.IN_FIRE || damageSource == DamageSource.IN_WALL || damageSource == DamageSource.LAVA || damageSource == DamageSource.ON_FIRE) {
+            return true;
+        } else {
+            return super.isInvulnerableTo(damageSource);
+        }
+    }
     
 	@Override
 	public void onDeath(DamageSource cause) {
-		this.world.addParticle(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY() + this.getHeight() / 2, this.getZ(), 1.0D, 1.0D, 1.0D);
+		this.getEntityWorld().addParticle(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY() + this.getHeight() / 2, this.getZ(), 1.0D, 1.0D, 1.0D);
 		ItemStack stack = new ItemStack(this.gemItem);
 		if (!stack.isEmpty()) {
 			((ItemGemstone) stack.getItem()).setData(this, stack);
@@ -238,8 +243,7 @@ public class GemEntity extends PathAwareEntity {
                 	player.sendMessage(new LiteralText("This gem will now stay"), false);
                     return;
             }
-        }
-        else if(this.getMovementType() == 2){
+        } else if(this.getMovementType() == 2){
             this.setMovementType((byte) 0);
             player.sendMessage(new LiteralText("This gem will now stay"), false);
             return;
@@ -257,6 +261,20 @@ public class GemEntity extends PathAwareEntity {
     public void addMovementType(int value){
         this.movementType += value;
     }
+    
+	public PlayerEntity getOwner() {
+		PlayerEntity owner = null;
+		double distance = Double.MAX_VALUE;
+		for (PlayerEntity playerIn : this.world.getPlayers()) {
+			if (PlayerEntity.getUuidFromProfile(playerIn.getGameProfile()).equals(this.getOwnerId())) {
+				if (this.squaredDistanceTo(playerIn.getPos()) <= distance) {
+					distance = this.squaredDistanceTo(playerIn.getPos());
+					owner = playerIn;
+				}
+			}
+		}
+		return owner;
+	}
     
 	public void itemDataToGemData(int data) {
 	}

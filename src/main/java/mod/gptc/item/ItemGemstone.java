@@ -5,6 +5,8 @@ import java.util.Optional;
 import mod.gptc.entity.GemEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -39,8 +41,12 @@ public class ItemGemstone extends Item {
                 if (entity2.getOwned() == true && entity2.getOwnerId().equals(player.getUuid())) {
                 	entity2.setOwnerId(player.getUuid());
                 }
+                entity2.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 25, 3, true, false, true));
                 entity2.updatePositionAndAngles(pos.getX() + 0.5F, pos.getY() + 1F, pos.getZ() + 0.5F, player.getYaw(), player.getPitch());
+                entity2.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 20, 1, true, false, true));
                 serverWorld.spawnEntity(entity2);
+                entity2.addStatusEffect(new StatusEffectInstance(StatusEffects.LEVITATION, 20, 1, true, false, true));
+                
             }
             context.getPlayer().getStackInHand(context.getHand());
             return ActionResult.SUCCESS;

@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
+import software.bernie.geckolib3.GeckoLib;
 
 public class GPTC implements ModInitializer {
 	/*Red = 0,
@@ -32,5 +33,6 @@ public class GPTC implements ModInitializer {
 		ModItems.registerItems();
 		ModLootTable.registerLoot();
 		ModEntities.registerEntities();
+		GeckoLib.initialize();
 	}
 }
