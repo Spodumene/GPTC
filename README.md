@@ -3,7 +3,7 @@
 ## Features
 * Gemstones - Items that summon their respective gems. 
 
-## Plans for 1.0
+## Plans for the End. Begin. All the Same. Update
 * Ruby - A pyrokinetic soldier, capable of many fire-based abilities.
     * Ability: Lighting enemies on fire
 * Sapphire - A prophetic gem that produces luck and warns of danger.
